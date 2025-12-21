@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: search_engine_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=wiki_corpus
+    networks:
+      - search_network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  search_engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: search_engine_app
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017
+      - DB_NAME=${DB_NAME:-wiki_corpus}
+      - COLLECTION_NAME=${COLLECTION_NAME:-pages}
+      - SERVER_PORT=8080
+    networks:
+      - search_network
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
+networks:
+  search_network:
+    driver: bridge
+
