@@ -138,9 +138,9 @@ def collect_pages():
                 title = m["title"]
                 pageid = m["pageid"]
 
-                if ns == 14:  # Подкатегория
+                if ns == 14:
                     queue.append(title)
-                elif ns == 0:  # Страница
+                elif ns == 0:
                     if pageid not in pages:
                         pages[pageid] = title
                         if len(pages) >= max_pages:

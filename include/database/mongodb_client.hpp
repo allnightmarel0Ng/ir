@@ -15,8 +15,8 @@ struct Document {
     std::string id;
     std::string url;
     std::string title;
-    std::chrono::system_clock::time_point created_at;
-    std::string pageid;
+    int created_at;
+    int pageid;
     std::string text;
 };
 

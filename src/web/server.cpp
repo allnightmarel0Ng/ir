@@ -1,5 +1,6 @@
 #include "web/server.hpp"
 #include "search/boolean_search.hpp"
+#include "text_processing/utf8_converter.hpp"
 #include <httplib.h>
 #include <sstream>
 #include <iostream>
@@ -105,9 +106,8 @@ std::string Server::HandleSearch(const std::string& query) {
             doc_obj["id"] = mongo_document.id;
             doc_obj["pageid"] = mongo_document.pageid;
             doc_obj["title"] = mongo_document.title;
-            doc_obj["text"] = mongo_document.text;
             doc_obj["url"] = mongo_document.url;
-            doc_obj["created_at"] = mongo_document.created_at.time_since_epoch().count();
+            doc_obj["created_at"] = mongo_document.created_at;
             documents.append(doc_obj);
         }
         root["documents"] = documents;

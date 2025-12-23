@@ -18,25 +18,6 @@ services:
       timeout: 5s
       retries: 5
 
-  search_engine:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: search_engine_app
-    ports:
-      - "${SERVER_PORT:-8080}:8080"
-    depends_on:
-      mongodb:
-        condition: service_healthy
-    environment:
-      - MONGODB_URI=mongodb://mongodb:27017
-      - DB_NAME=${DB_NAME:-wiki_corpus}
-      - COLLECTION_NAME=${COLLECTION_NAME:-pages}
-      - SERVER_PORT=8080
-    networks:
-      - search_network
-    restart: unless-stopped
-
 volumes:
   mongodb_data:
 

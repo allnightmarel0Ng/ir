@@ -1,0 +1,13 @@
+db:
+  host: localhost
+  port: 27017
+  database: wiki_corpus
+  collection: pages
+logic:
+  delay_between_pages: 0.05
+  save_dir: documents
+  max_pages: 50000
+  batch_size: 2000
+  api_delay: 0.1
+  page_delay: 0.05
+  min_text_chars: 300

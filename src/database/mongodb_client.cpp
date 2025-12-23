@@ -60,7 +60,7 @@ std::vector<Document> MongoDBClient::FindByIds(const containers::HashSet<std::st
             result.id = doc["_id"].get_oid().value.to_string();
             
             if (doc["pageid"]) {
-                result.pageid = std::string(doc["pageid"].get_string().value);
+                result.pageid = doc["pageid"].get_int32().value;
             }
             if (doc["text"]) {
                 result.text = std::string(doc["text"].get_string().value);
@@ -72,9 +72,7 @@ std::vector<Document> MongoDBClient::FindByIds(const containers::HashSet<std::st
                 result.url = std::string(doc["url"].get_string().value);
             }
             if (doc["created_at"]) {
-                result.created_at = std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>(
-                    doc["created_at"].get_date().value
-                );
+                result.created_at = doc["created_at"].get_int32().value;;
             }
             
             results.push_back(std::move(result));
@@ -94,9 +92,9 @@ std::vector<Document> MongoDBClient::GetAllDocuments() {
     for (auto&& doc : cursor) {
         Document document;
         document.id = doc["_id"].get_oid().value.to_string();
-        
+
         if (doc["pageid"]) {
-            document.pageid = std::string(doc["pageid"].get_string().value);
+            document.pageid = doc["pageid"].get_int32().value;
         }
         if (doc["text"]) {
             document.text = std::string(doc["text"].get_string().value);
@@ -108,7 +106,7 @@ std::vector<Document> MongoDBClient::GetAllDocuments() {
             document.url = std::string(doc["url"].get_string().value);
         }
         if (doc["created_at"]) {
-            document.created_at = std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>(doc["created_at"].get_date().value);
+            document.created_at = doc["created_at"].get_int32().value;
         }
         
         documents.push_back(document);
